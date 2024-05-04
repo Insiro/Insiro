@@ -1,0 +1,23 @@
+name: Deploy_and build
+    
+on:
+    push:
+        branches: [ master ]
+    workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: [ubuntu-latest]
+    
+    steps:
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_IP }}
+          username: ${{ secrets.REMOTE_SSH_ID }}
+          password: ${{ secrets.PASSWORD }}
+          port: 22
+          script: |
+            cd /data/server_data/homeServer/profile
+            git pull
